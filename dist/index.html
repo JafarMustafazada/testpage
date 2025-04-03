@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Send Request to API</title>
+	<style>
+		#response {
+			margin-top: 20px;
+			padding: 10px;
+			border: 1px solid #ccc;
+			background-color: #f9f9f9;
+		}
+	</style>
+</head>
+
+<body>
+	<form id="apiForm">
+		<input type="text" id="func" name="func" value="create">
+		<input type="text" id="user" name="user" value="best">
+		<button type="submit">Send Request</button>
+	</form><br>
+
+	<form action="/api/helloworld" method="GET">
+		<input type="text" name="func" value="check">
+		<input type="text" name="user" value="username">
+		<input type="text" name="jwt" value="jwt">
+		<button type="submit">Send Request</button>
+	</form>
+
+	<div id="response" style="display:none;">
+		<p>JWT: <span id="responseJwt"></span> <button class="copy-button" id="copyJwtButton">Copy JWT</button></p>
+		<p>Request Sent at: <span id="requestSentTime"></span></p>
+		<p>Recived in: <span id="responseJsonTime"></span></p>
+		<p>Response Received at: <span id="responseReceivedTime"></span></p>
+	</div>
+
+	<script>
+		document.getElementById('apiForm').addEventListener('submit', function (event) {
+			event.preventDefault(); // Prevent the form from submitting the traditional way
+
+			const func = document.getElementById('func').value;
+			const user = document.getElementById('user').value;
+			const url = `/api/helloworld?func=${encodeURIComponent(func)}&user=${encodeURIComponent(user)}`;
+			const requestSentTimeSpan = document.getElementById('requestSentTime');
+			requestSentTimeSpan.textContent = new Date() % 10000;
+
+			fetch(url)
+				.then(response => response.json())
+				.then(data => {
+					const responseReceivedTime = new Date() % 10000;
+					const responseDiv = document.getElementById('response');
+					const responseJwt = document.getElementById('responseJwt');
+					const responseJsonTime = document.getElementById('responseJsonTime');
+					const responseReceivedTimeSpan = document.getElementById('responseReceivedTime');
+
+					responseJwt.textContent = data.jwt;
+					responseJsonTime.textContent = data.time % 10000;
+					responseReceivedTimeSpan.textContent = responseReceivedTime;
+					responseDiv.style.display = 'block';
+
+					document.getElementById('copyJwtButton').addEventListener('click', function () {
+						navigator.clipboard.writeText(data.jwt)
+							.then(() => {
+								alert('JWT copied to clipboard!');
+							})
+							.catch(err => {
+								console.error('Failed to copy JWT: ', err);
+							});
+					});
+				})
+				.catch(error => {
+					console.error('Error:', error);
+				});
+		});
+	</script>
+</body>
+
+</html>

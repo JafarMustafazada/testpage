@@ -1,0 +1,8 @@
+{
+	"Token": {
+		"Issuer": "https://endergfungames.com",
+		"Audience": "https://endergfungames.com/api",
+		"Secret": "652bf39cec002eeef609f6590f093ecbcdb7f52206ffe53f247162a56012716d",
+		"ExpireMinute": 1
+	}
+}
