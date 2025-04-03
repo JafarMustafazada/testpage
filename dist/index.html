@@ -17,14 +17,14 @@
 	<form id="apiForm">
 		<input type="text" id="func" name="func" value="create">
 		<input type="text" id="user" name="user" value="best">
-		<button type="submit">Send Request</button>
+		<button type="submit" onclick="handleSubmit()">Send Request</button>
 	</form><br>
 
 	<form action="/api/helloworld" method="GET">
 		<input type="text" name="func" value="check">
 		<input type="text" name="user" value="username">
 		<input type="text" name="jwt" value="jwt">
-		<button type="submit" onclick="">Send Request</button>
+		<button type="submit">Send Request</button>
 	</form>
 
 	<div id="response" style="display:none;">
@@ -32,22 +32,19 @@
 		<p>Request Sent at: <span id="requestSentTime"></span></p>
 		<p>Recived in: <span id="responseJsonTime"></span></p>
 		<p>Response Received at: <span id="responseReceivedTime"></span></p>
-	</div>
+	</div><br>
 
 	<table id="tbl1">
 		<caption>Table 1</caption>
 		<thead>
 			<tr>
-				<th>Header 1</th>
-				<th>Header 2</th>
-				<th>Header 3</th>
+				<th>Sended.</th>
+				<th>Got it.</th>
+				<th>Responsed.</th>
 			</tr>
 		</thead>
 		<tbody id="tbb1">
 			<tr>
-				<td>Data 1</td>
-				<td>Data 2</td>
-				<td>Data 3</td>
 			</tr>
 		</tbody>
 	</table>
@@ -76,9 +73,7 @@
 			tbl.appendChild(tblBody);
 		}
 
-		function handleSubmit(event) {
-			if (event) event.preventDefault();
-
+		function handleSubmit() {
 			const func = document.getElementById('func').value;
 			const user = document.getElementById('user').value;
 			const url = `/api/helloworld?func=${encodeURIComponent(func)}&user=${encodeURIComponent(user)}`;
@@ -115,6 +110,11 @@
 					console.error('Error:', error);
 				});
 		}
+	</script>
+	<script>
+		document.getElementById("apiForm").addEventListener("click", function (event) {
+			event.preventDefault();
+		});;
 	</script>
 </body>
 
