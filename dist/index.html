@@ -24,7 +24,7 @@
 		<input type="text" name="func" value="check">
 		<input type="text" name="user" value="username">
 		<input type="text" name="jwt" value="jwt">
-		<button type="submit">Send Request</button>
+		<button type="submit" onclick="">Send Request</button>
 	</form>
 
 	<div id="response" style="display:none;">
@@ -34,29 +34,72 @@
 		<p>Response Received at: <span id="responseReceivedTime"></span></p>
 	</div>
 
+	<table id="tbl1">
+		<caption>Table 1</caption>
+		<thead>
+			<tr>
+				<th>Header 1</th>
+				<th>Header 2</th>
+				<th>Header 3</th>
+			</tr>
+		</thead>
+		<tbody id="tbb1">
+			<tr>
+				<td>Data 1</td>
+				<td>Data 2</td>
+				<td>Data 3</td>
+			</tr>
+		</tbody>
+	</table>
 	<script>
-		document.getElementById('apiForm').addEventListener('submit', function (event) {
-			event.preventDefault(); // Prevent the form from submitting the traditional way
+
+		function addtotable() {
+			let num1 = document.getElementById('requestSentTime').textContent;
+			let num2 = document.getElementById('responseReceivedTime').textContent;
+			let num3 = document.getElementById('responseJsonTime').textContent;
+
+			const tbl = document.getElementById("tbl1");
+			tbl.setAttribute("border", "2");
+
+			const tblBody = document.getElementById("tbb1");
+			const row = document.createElement("tr");
+			const numbers = [num1, num2, num3];
+
+			for (let i = 0; i < numbers.length; i++) {
+				const cell = document.createElement("td");
+				const cellText = document.createTextNode(numbers[i]);
+				cell.appendChild(cellText);
+				row.appendChild(cell);
+			}
+
+			tblBody.appendChild(row);
+			tbl.appendChild(tblBody);
+		}
+
+		function handleSubmit(event) {
+			if (event) event.preventDefault();
 
 			const func = document.getElementById('func').value;
 			const user = document.getElementById('user').value;
 			const url = `/api/helloworld?func=${encodeURIComponent(func)}&user=${encodeURIComponent(user)}`;
 			const requestSentTimeSpan = document.getElementById('requestSentTime');
-			requestSentTimeSpan.textContent = new Date() % 10000;
+			requestSentTimeSpan.textContent = new Date() % 100000;
 
 			fetch(url)
 				.then(response => response.json())
 				.then(data => {
-					const responseReceivedTime = new Date() % 10000;
+					const responseReceivedTime = new Date() % 100000;
 					const responseDiv = document.getElementById('response');
 					const responseJwt = document.getElementById('responseJwt');
 					const responseJsonTime = document.getElementById('responseJsonTime');
 					const responseReceivedTimeSpan = document.getElementById('responseReceivedTime');
 
 					responseJwt.textContent = data.jwt;
-					responseJsonTime.textContent = data.time % 10000;
+					responseJsonTime.textContent = data.time % 100000;
 					responseReceivedTimeSpan.textContent = responseReceivedTime;
 					responseDiv.style.display = 'block';
+
+					addtotable();
 
 					document.getElementById('copyJwtButton').addEventListener('click', function () {
 						navigator.clipboard.writeText(data.jwt)
@@ -71,7 +114,7 @@
 				.catch(error => {
 					console.error('Error:', error);
 				});
-		});
+		}
 	</script>
 </body>
 
