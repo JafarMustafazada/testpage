@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this software for paper, please cite it as below."
+authors:
+- family-names: "Mustafazade"
+  given-names: "Jafar"
+  orcid: "https://orcid.org/0009-0004-2570-9806"
+title: "testpage"
+version: 1.0.0
+date-released: 2025-04-07
+url: "https://github.com/JafarMustafazada/testpage"
